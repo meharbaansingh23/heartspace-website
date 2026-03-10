@@ -1,0 +1,47 @@
+@import 'tailwindcss' source(none);
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@import 'tw-animate-css';
+
+@keyframes blob-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(5deg);
+  }
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes star-pulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0.5;
+  }
+}
+
+.animate-blob-float {
+  animation: blob-float 8s ease-in-out infinite alternate;
+}
+
+.animate-hero-enter {
+  animation: hero-enter 0.75s ease-out forwards;
+}
+
+.animate-star-pulse {
+  animation: star-pulse 3.5s ease-in-out infinite;
+}

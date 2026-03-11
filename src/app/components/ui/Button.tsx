@@ -21,6 +21,10 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         "large-coral":
           "h-auto px-8 py-4 rounded-full text-base font-bold text-white bg-[var(--coral)] hover:opacity-90 active:scale-95 transition-all shadow-lg",
+        primary:
+          "text-[13px] px-[22px] py-[11px] rounded-full font-bold text-white transition-all hover:shadow-lg bg-[var(--purple)] [box-shadow:0_4px_20px_rgba(124,92,191,0.3)] group",
+        white:
+          "bg-white text-black rounded-full hover:bg-white/90 active:scale-95 transition-all",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

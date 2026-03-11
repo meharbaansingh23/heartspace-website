@@ -81,10 +81,10 @@ function HeroSection() {
           className="flex items-center justify-center gap-4 mb-12 flex-wrap animate-hero-enter opacity-0"
           style={{ animationDelay: "0.58s" }}
         >
-          <Button variant="primary" to="/workshop">
+          <Button variant="primary" href="/workshop">
             Join Workshop 1
           </Button>
-          <Button variant="outline" to="/about">
+          <Button variant="outline" href="/about">
             Meet Shashi
           </Button>
         </div>
@@ -171,10 +171,10 @@ function WhatIsHeartSpaceSection() {
                 that changes how you see — and therefore how you relate.
               </p>
               <div className="flex gap-4 flex-wrap">
-                <Button variant="primary" to="/workshop">
+                <Button variant="primary" href="/workshop">
                   See Workshop 1
                 </Button>
-                <Button variant="outline" to="/about">
+                <Button variant="outline" href="/about">
                   Our Story
                 </Button>
               </div>
@@ -345,12 +345,7 @@ function ShashiTeaserSection() {
 
               {/* SV Text */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  className="text-[100px] font-black opacity-[0.18]"
-                  style={{ color: "#7C5CBF" }}
-                >
-                  SV
-                </span>
+                <img src="/shashi-velath.jpg" alt="Shashi Velath" className="w-full h-full object-cover" />
               </div>
 
               {/* Bottom Bar */}
@@ -397,7 +392,7 @@ function ShashiTeaserSection() {
                 those lessons.
               </p>
 
-              <Button variant="outline" to="/about">
+              <Button variant="outline"href="/about">
                 Read Shashi's Story
               </Button>
             </div>
@@ -462,7 +457,7 @@ function WorkshopCardSection() {
                   recording you keep forever. Built around the conversations most of us spend
                   years avoiding.
                 </p>
-                <Button variant="white" to="/workshop">
+                <Button variant="white" href="/workshop">
                   See Full Details
                 </Button>
               </div>
@@ -771,10 +766,10 @@ function FinalCTASection() {
 
         <ScrollReveal delay={320}>
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Button variant="primary" to="/workshop">
+            <Button variant="primary" href="/workshop">
               Join Workshop 1
             </Button>
-            <Button variant="outline" to="/workshop">
+            <Button variant="outline" href="/workshop">
               Learn More
             </Button>
           </div>

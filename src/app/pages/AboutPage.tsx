@@ -22,7 +22,7 @@ export function AboutPage() {
 
 function HeroSection() {
   return (
-    <section className="relative py-[100px] px-16 max-[900px]:px-6 overflow-hidden">
+    <section className="relative min-h-[92dvh] items-center flex px-16 max-[900px]:px-6 overflow-hidden">
       <FloatingBlob
         color="#FFD4B8"
         opacity={0.35}
@@ -68,10 +68,10 @@ function HeroSection() {
             </div>
 
             <div className="flex gap-4 flex-wrap">
-              <Button variant="primary" href="#story">
+              <Button variant="default" href="#story">
                 Read the full story
               </Button>
-              <Button variant="outline" to="/workshop">
+              <Button variant="outline" href="/workshop">
                 Join Workshop 1
               </Button>
             </div>
@@ -79,21 +79,23 @@ function HeroSection() {
 
           {/* Right - Shashi Photo */}
           <ScrollReveal delay={160}>
-            <div
-              className="relative rounded-3xl overflow-hidden"
-              style={{ aspectRatio: "3/4" }}
-            >
-              <img
-                src="/shashi-velath.jpg"
-                alt="Shashi Velath"
-                className="w-full h-full object-cover"
-              />
-              {/* Bottom Bar */}
+            <div className="flex justify-center max-[900px]:justify-start">
               <div
-                className="absolute bottom-0 left-0 right-0 py-3 px-5 text-center text-white text-xs font-bold tracking-wide"
-                style={{ background: "#FF7F5C" }}
+                className="relative rounded-3xl overflow-hidden w-[85%] max-w-[420px]"
+                style={{ aspectRatio: "3/4" }}
               >
-                WAR CORRESPONDENT → COACH
+                <img
+                  src="/shashi-velath.jpg"
+                  alt="Shashi Velath"
+                  className="w-full h-full object-cover"
+                />
+                {/* Bottom Bar */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 py-3 px-5 text-center text-white text-xs font-bold tracking-wide"
+                  style={{ background: "#FF7F5C" }}
+                >
+                  WAR CORRESPONDENT → COACH
+                </div>
               </div>
             </div>
           </ScrollReveal>
@@ -212,14 +214,14 @@ function Chapter01Section() {
           <div className="mt-16 grid grid-cols-2 max-[900px]:grid-cols-1 gap-6">
             <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3" }}>
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1653212883754-c40e8e5c1e24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqb3VybmFsaXN0JTIwdHlwaW5nJTIwd2FyfGVufDF8fHx8MTc3MzExNzA4NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="/aboutUS_War_1.webp"
                 alt="Journalism and reporting"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3" }}>
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1653569693215-3b1fc81d2b7f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxub3RlYm9vayUyMHdyaXRpbmclMjByZWZsZWN0aW9uJTIwam91cm5hbHxlbnwxfHx8fDE3NzMxMTcwODJ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="/aboutUS_War_1.webp"
                 alt="Notebook and reflection"
                 className="w-full h-full object-cover"
               />
@@ -247,7 +249,7 @@ function Chapter02Section() {
           <div className="mb-16">
             <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "21/9" }}>
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1758518731706-be5d5230e5a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMG1lZXRpbmclMjBib2FyZHJvb20lMjBkaXNjdXNzaW9ufGVufDF8fHx8MTc3MzA0NTg4NXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src="/aboutUs_Corporate_Image.webp"
                 alt="Boardroom discussions"
                 className="w-full h-full object-cover"
               />
@@ -578,7 +580,7 @@ function CTASection() {
         </ScrollReveal>
 
         <ScrollReveal delay={320}>
-          <Button variant="primary" to="/workshop">
+          <Button variant="default" href="/workshop">
             Join Workshop 1
           </Button>
         </ScrollReveal>

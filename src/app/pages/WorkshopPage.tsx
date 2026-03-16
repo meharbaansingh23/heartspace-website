@@ -1,26 +1,141 @@
-import { useState, useEffect } from "react";
-import { Pill } from "../components/ui/Pill";
-import { Button } from "../components/ui/Button";
-import { FloatingBlob } from "../components/ui/FloatingBlob";
-import { ScrollReveal } from "../components/ui/ScrollReveal";
+"use client";
 
-export function WorkshopPage() {
+import { useState, useEffect } from "react";
+import { Pill } from "@/components/ui/pill";
+import { Button } from "@/components/ui/button";
+import { FloatingBlob } from "@/components/ui/floating-blob";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { RegistrationModal } from "@/components/RegistrationModal";
+import { trackEvent } from "@/lib/analytics";
+
+export interface WorkshopData {
+  id: number;
+  name: string;
+  date_1: string;
+  date_2: string;
+  session_time: string;
+  regular_price: number;
+  discounted_price: number | null;
+  is_active: boolean;
+  zoom_link: string | null;
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("en-IN", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function formatShortDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("en-IN", {
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function WorkshopPage({ workshop }: { workshop: WorkshopData }) {
+  const [showModal, setShowModal] = useState(false);
+
+  const priceInRupees = Math.round(
+    (workshop.discounted_price ?? workshop.regular_price) / 100
+  );
+  const regularPriceInRupees = Math.round(workshop.regular_price / 100);
+  const hasDiscount =
+    workshop.discounted_price !== null &&
+    workshop.discounted_price < workshop.regular_price;
+
+  const openBooking = () => {
+    trackEvent("begin_checkout", { currency: "INR", value: priceInRupees });
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    // Open modal when Navigation dispatches the event (user is already on this page)
+    const handler = () => openBooking();
+    window.addEventListener("open-booking-modal", handler);
+
+    // Open modal if navigated here with #book hash (from other pages)
+    if (window.location.hash === "#book") {
+      openBooking();
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+
+    return () => window.removeEventListener("open-booking-modal", handler);
+  }, []);
+
+  const date1Short = formatShortDate(workshop.date_1);
+  const date2Short = formatShortDate(workshop.date_2);
+  const dateRange = `${date1Short} & ${date2Short}`;
+
   return (
     <div>
-      <HeroSection />
+      {showModal && (
+        <RegistrationModal
+          workshop={{
+            id: workshop.id,
+            name: workshop.name,
+            regular_price: workshop.regular_price,
+            discounted_price: workshop.discounted_price,
+          }}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+      <HeroSection
+        workshop={workshop}
+        priceInRupees={priceInRupees}
+        regularPriceInRupees={regularPriceInRupees}
+        hasDiscount={hasDiscount}
+        dateRange={dateRange}
+        onBookClick={openBooking}
+      />
       <ThemeSection />
-      <WhatsIncludedSection />
-      <ExperienceFlowSection />
-      <TwoSessionsSection />
-      <PricingSection />
+      <WhatsIncludedSection
+        priceInRupees={priceInRupees}
+        regularPriceInRupees={regularPriceInRupees}
+        hasDiscount={hasDiscount}
+      />
+      <ExperienceFlowSection workshop={workshop} />
+      <TwoSessionsSection workshop={workshop} />
+      <PricingSection
+        workshop={workshop}
+        priceInRupees={priceInRupees}
+        regularPriceInRupees={regularPriceInRupees}
+        hasDiscount={hasDiscount}
+        dateRange={dateRange}
+        onBookClick={openBooking}
+      />
       <IsThisForYouSection />
       <FAQSection />
-      <FinalBookingCTA />
+      <FinalBookingCTA
+        priceInRupees={priceInRupees}
+        regularPriceInRupees={regularPriceInRupees}
+        hasDiscount={hasDiscount}
+        dateRange={dateRange}
+        onBookClick={openBooking}
+      />
     </div>
   );
 }
 
-function HeroSection() {
+function HeroSection({
+  workshop,
+  priceInRupees,
+  regularPriceInRupees,
+  hasDiscount,
+  dateRange,
+  onBookClick,
+}: {
+  workshop: WorkshopData;
+  priceInRupees: number;
+  regularPriceInRupees: number;
+  hasDiscount: boolean;
+  dateRange: string;
+  onBookClick: () => void;
+}) {
   return (
     <section className="relative py-[100px] px-16 max-[900px]:px-6 overflow-hidden">
       <FloatingBlob
@@ -45,7 +160,7 @@ function HeroSection() {
               className="text-[11px] font-bold uppercase mb-4"
               style={{ color: "var(--ink-soft)" }}
             >
-              Workshop 1 — Now Open
+              Workshop — Now Open
             </p>
 
             <h1 style={{ fontSize: "clamp(38px, 5.5vw, 68px)" }}>
@@ -63,8 +178,12 @@ function HeroSection() {
             </p>
 
             <div className="mb-4">
-              <Button variant="large-coral" href="#">
-                Book Your Spot · ₹499
+              <Button variant="large-coral" onClick={onBookClick}>
+                Book Your Spot ·{" "}
+                {hasDiscount && (
+                  <span className="line-through opacity-50 mr-1">₹{regularPriceInRupees}</span>
+                )}
+                ₹{priceInRupees}
               </Button>
             </div>
 
@@ -88,8 +207,8 @@ function HeroSection() {
 
               <div className="space-y-4 mb-6">
                 {[
-                  { emoji: "📅", label: "Dates", value: "March 28 & 29, 2026" },
-                  { emoji: "🕖", label: "Time", value: "11:00 AM - 12:30 PM IST both days" },
+                  { emoji: "📅", label: "Dates", value: dateRange },
+                  { emoji: "🕖", label: "Time", value: `${workshop.session_time} both days` },
                   { emoji: "⏱️", label: "Format", value: "90 minutes × 2 live sessions" },
                   { emoji: "💻", label: "Platform", value: "Live on Zoom" },
                   { emoji: "🌍", label: "Open to", value: "Anyone, anywhere" },
@@ -115,17 +234,19 @@ function HeroSection() {
                   <div className="flex-1">
                     <span className="font-semibold text-sm">Investment</span>
                     <span className="mx-2 text-sm opacity-30">/</span>
-                    <span
-                      className="text-lg font-bold"
-                      style={{ color: "var(--purple)" }}
-                    >
-                      ₹499 · All-in
+                    <span className="text-lg font-bold" style={{ color: "var(--purple)" }}>
+                      {hasDiscount && (
+                        <span className="line-through opacity-50 font-normal text-base mr-1.5">
+                          ₹{regularPriceInRupees}
+                        </span>
+                      )}
+                      ₹{priceInRupees} · All-in
                     </span>
                   </div>
                 </div>
               </div>
 
-              <CountdownTimer />
+              <CountdownTimer targetDate={workshop.date_1} />
             </div>
           </div>
         </div>
@@ -134,7 +255,7 @@ function HeroSection() {
   );
 }
 
-function CountdownTimer() {
+function CountdownTimer({ targetDate: targetDateStr }: { targetDate: string }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -144,7 +265,8 @@ function CountdownTimer() {
   });
 
   useEffect(() => {
-    const targetDate = new Date("2026-03-28T13:30:00Z").getTime();
+    // Use start of day IST (UTC+5:30) = 05:30 UTC
+    const targetDate = new Date(`${targetDateStr}T05:30:00Z`).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -326,7 +448,15 @@ function ThemeSection() {
   );
 }
 
-function WhatsIncludedSection() {
+function WhatsIncludedSection({
+  priceInRupees,
+  regularPriceInRupees,
+  hasDiscount,
+}: {
+  priceInRupees: number;
+  regularPriceInRupees: number;
+  hasDiscount: boolean;
+}) {
   return (
     <section className="relative py-24 px-16 max-[900px]:px-6 overflow-hidden" id="included">
       <FloatingBlob
@@ -344,7 +474,11 @@ function WhatsIncludedSection() {
               Everything you need. Nothing you don't.
             </h2>
             <p className="text-[17px]" style={{ color: "var(--ink-soft)" }}>
-              For ₹499, here is everything you walk away with.
+              For{" "}
+              {hasDiscount && (
+                <span className="line-through opacity-50 mr-1">₹{regularPriceInRupees}</span>
+              )}
+              ₹{priceInRupees}, here is everything you walk away with.
             </p>
           </div>
         </ScrollReveal>
@@ -435,7 +569,11 @@ function WhatsIncludedSection() {
   );
 }
 
-function ExperienceFlowSection() {
+function ExperienceFlowSection({ workshop }: { workshop: WorkshopData }) {
+  const date1Short = formatShortDate(workshop.date_1);
+  const date2Short = formatShortDate(workshop.date_2);
+  const sessionLabel = `${date1Short} & ${date2Short}`;
+  const sessionTime = workshop.session_time;
   return (
     <section className="py-20 px-16 max-[900px]:px-6">
       <div className="max-w-[900px] mx-auto">
@@ -467,9 +605,9 @@ function ExperienceFlowSection() {
               {
                 emoji: "🎙️",
                 bg: "#DDD4F8",
-                label: "March 28 & 29",
+                label: sessionLabel,
                 title: "Two live sessions",
-                text: "90 minutes each with Shashi. Guided exercises. Real conversation. Small group. 11 AM - 12:30 PM IST.",
+                text: `90 minutes each with Shashi. Guided exercises. Real conversation. Small group. ${sessionTime}.`,
               },
               {
                 emoji: "📖",
@@ -510,7 +648,10 @@ function ExperienceFlowSection() {
   );
 }
 
-function TwoSessionsSection() {
+function TwoSessionsSection({ workshop }: { workshop: WorkshopData }) {
+  const date1Short = formatShortDate(workshop.date_1);
+  const date2Short = formatShortDate(workshop.date_2);
+  const sessionTime = workshop.session_time;
   return (
     <section className="relative py-24 px-16 max-[900px]:px-6 overflow-hidden" id="sessions">
       <FloatingBlob
@@ -538,7 +679,7 @@ function TwoSessionsSection() {
               }}
             >
               <p className="text-sm font-bold mb-3" style={{ color: "var(--ink-soft)" }}>
-                Session 1 · March 28
+                Session 1 · {date1Short}
               </p>
               <h3 className="mb-4" style={{ fontSize: "clamp(20px, 2.4vw, 28px)" }}>
                 Relationship as a Mirror
@@ -555,7 +696,7 @@ function TwoSessionsSection() {
                   className="px-3 py-1 rounded-full text-xs font-bold"
                   style={{ background: "#DDD4F8", color: "var(--purple-dark)" }}
                 >
-                  11:00 AM - 12:30 PM IST
+{sessionTime}
                 </span>
               </div>
 
@@ -607,7 +748,7 @@ function TwoSessionsSection() {
               }}
             >
               <p className="text-sm font-bold mb-3" style={{ color: "var(--ink-soft)" }}>
-                Session 2 · March 29
+                Session 2 · {date2Short}
               </p>
               <h3 className="mb-4" style={{ fontSize: "clamp(20px, 2.4vw, 28px)" }}>
                 Relating Without Images
@@ -624,7 +765,7 @@ function TwoSessionsSection() {
                   className="px-3 py-1 rounded-full text-xs font-bold"
                   style={{ background: "#FFD4B8", color: "#8B4513" }}
                 >
-                  11:00 AM - 12:30 PM IST
+{sessionTime}
                 </span>
               </div>
 
@@ -668,7 +809,21 @@ function TwoSessionsSection() {
   );
 }
 
-function PricingSection() {
+function PricingSection({
+  workshop,
+  priceInRupees,
+  regularPriceInRupees,
+  hasDiscount,
+  dateRange,
+  onBookClick,
+}: {
+  workshop: WorkshopData;
+  priceInRupees: number;
+  regularPriceInRupees: number;
+  hasDiscount: boolean;
+  dateRange: string;
+  onBookClick: () => void;
+}) {
   return (
     <section className="py-24 px-16 max-[900px]:px-6">
       <div className="max-w-[680px] mx-auto">
@@ -707,16 +862,21 @@ function PricingSection() {
                 className="text-xs font-bold uppercase tracking-wider mb-4"
                 style={{ color: "rgba(255,255,255,0.4)" }}
               >
-                ✦ Workshop 1 · All-in price
+                ✦ Workshop · All-in price
               </p>
 
               <div className="mb-2">
+                {hasDiscount && (
+                  <div className="text-2xl text-white/40 line-through mb-1">
+                    ₹{regularPriceInRupees}
+                  </div>
+                )}
                 <sup className="text-4xl text-white align-super mr-1">₹</sup>
                 <span
                   className="text-white"
                   style={{ fontSize: "clamp(72px, 9vw, 104px)" }}
                 >
-                  499
+                  {priceInRupees}
                 </span>
               </div>
 
@@ -744,15 +904,19 @@ function PricingSection() {
                 ))}
               </div>
 
-              <Button variant="large-coral" href="#">
-                Book My Spot
+              <Button variant="large-coral" onClick={onBookClick}>
+                Book My Spot ·{" "}
+                {hasDiscount && (
+                  <span className="line-through opacity-50 mr-1">₹{regularPriceInRupees}</span>
+                )}
+                ₹{priceInRupees}
               </Button>
 
               <p
                 className="text-[13px] mt-6"
                 style={{ color: "rgba(255,255,255,0.3)" }}
               >
-                March 28 & 29 · 11:00 AM - 12:30 PM IST · Live on Zoom
+                {dateRange} · {workshop.session_time} · Live on Zoom
               </p>
             </div>
           </div>
@@ -921,7 +1085,19 @@ function FAQSection() {
   );
 }
 
-function FinalBookingCTA() {
+function FinalBookingCTA({
+  priceInRupees,
+  regularPriceInRupees,
+  hasDiscount,
+  dateRange,
+  onBookClick,
+}: {
+  priceInRupees: number;
+  regularPriceInRupees: number;
+  hasDiscount: boolean;
+  dateRange: string;
+  onBookClick: () => void;
+}) {
   return (
     <section className="relative py-[120px] px-16 max-[900px]:px-6 overflow-hidden">
       <FloatingBlob
@@ -933,7 +1109,13 @@ function FinalBookingCTA() {
 
       <div className="relative z-10 max-w-[620px] mx-auto text-center">
         <ScrollReveal>
-          <Pill variant="coral">March 28 & 29 · ₹499</Pill>
+          <Pill variant="coral">
+            {dateRange} ·{" "}
+            {hasDiscount && (
+              <span className="line-through opacity-70 mr-1">₹{regularPriceInRupees}</span>
+            )}
+            ₹{priceInRupees}
+          </Pill>
         </ScrollReveal>
 
         <ScrollReveal delay={160}>
@@ -955,8 +1137,12 @@ function FinalBookingCTA() {
 
         <ScrollReveal delay={320}>
           <div className="mb-4">
-            <Button variant="large-coral" href="#">
-              Book My Spot · ₹499
+            <Button variant="large-coral" onClick={onBookClick}>
+              Book My Spot ·{" "}
+              {hasDiscount && (
+                <span className="line-through opacity-50 mr-1">₹{regularPriceInRupees}</span>
+              )}
+              ₹{priceInRupees}
             </Button>
           </div>
           <p className="text-sm" style={{ color: "var(--ink-faint)" }}>

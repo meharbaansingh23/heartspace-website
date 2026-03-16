@@ -1,8 +1,10 @@
-import { Pill } from "../components/ui/Pill";
-import { Button } from "../components/ui/Button";
-import { FloatingBlob } from "../components/ui/FloatingBlob";
-import { ScrollReveal } from "../components/ui/ScrollReveal";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+"use client";
+
+import { Pill } from "@/components/ui/pill";
+import { Button } from "@/components/ui/button";
+import { FloatingBlob } from "@/components/ui/floating-blob";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { ImageWithFallback } from "@/components/figma/image-with-fallback";
 
 export function AboutPage() {
   return (
@@ -72,7 +74,7 @@ function HeroSection() {
                 Read the full story
               </Button>
               <Button variant="outline" href="/workshop">
-                Join Workshop 1
+                Join Workshop
               </Button>
             </div>
           </div>
@@ -563,13 +565,13 @@ function CTASection() {
 
         <ScrollReveal delay={240}>
           <p className="text-lg mb-10" style={{ color: "var(--ink-soft)" }}>
-            Workshop 1 is open now. Join Shashi for two evenings of guided conversation.
+            Workshop is open now. Join Shashi for two evenings of guided conversation.
           </p>
         </ScrollReveal>
 
         <ScrollReveal delay={320}>
           <Button variant="default" href="/workshop">
-            Join Workshop 1
+            Join Workshop
           </Button>
         </ScrollReveal>
       </div>

@@ -1,7 +1,9 @@
-import { Pill } from "../components/ui/Pill";
-import { Button } from "../components/ui/Button";
-import { FloatingBlob } from "../components/ui/FloatingBlob";
-import { ScrollReveal } from "../components/ui/ScrollReveal";
+"use client";
+
+import { Pill } from "@/components/ui/pill";
+import { Button } from "@/components/ui/button";
+import { FloatingBlob } from "@/components/ui/floating-blob";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function HomePage() {
   return (
@@ -79,7 +81,7 @@ function HeroSection() {
           style={{ animationDelay: "0.58s" }}
         >
           <Button variant="primary" href="/workshop">
-            Join Workshop 1
+            Join Workshop
           </Button>
           <Button variant="outline" href="/about">
             Meet Shashi
@@ -169,7 +171,7 @@ function WhatIsHeartSpaceSection() {
               </p>
               <div className="flex gap-4 flex-wrap">
                 <Button variant="primary" href="/workshop">
-                  See Workshop 1
+                  See Workshop
                 </Button>
                 <Button variant="outline" href="/about">
                   Our Story
@@ -756,7 +758,7 @@ function FinalCTASection() {
             className="text-lg mb-10"
             style={{ color: "var(--ink-soft)" }}
           >
-            Heart Space is open now. Join Workshop 1 and give yourself permission to hear
+            Heart Space is open now. Join Workshop and give yourself permission to hear
             yourself clearly.
           </p>
         </ScrollReveal>
@@ -764,7 +766,7 @@ function FinalCTASection() {
         <ScrollReveal delay={320}>
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Button variant="primary" href="/workshop">
-              Join Workshop 1
+              Join Workshop
             </Button>
             <Button variant="outline" href="/workshop">
               Learn More

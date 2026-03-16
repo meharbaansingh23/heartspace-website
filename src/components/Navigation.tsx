@@ -1,9 +1,12 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Navigation() {
   const [hasScrolled, setHasScrolled] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,14 +17,14 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const getCtaButton = () => {
-    if (location.pathname === "/workshop") {
-      return { text: "Book Now · ₹499 →", href: "/workshop" };
-    }
-    return { text: "Join Workshop 1 →", href: "/workshop" };
-  };
+  const isWorkshopPage = pathname === "/workshop";
 
-  const cta = getCtaButton();
+  const handleCtaClick = (e: React.MouseEvent) => {
+    if (isWorkshopPage) {
+      e.preventDefault();
+      window.dispatchEvent(new CustomEvent("open-booking-modal"));
+    }
+  };
 
   return (
     <nav
@@ -32,8 +35,8 @@ export function Navigation() {
     >
       <div className="h-full px-16 max-[900px]:px-5 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5">
-          <HeartIcon />
+        <Link href="/" className="flex items-center gap-2.5">
+          <img src="/heart-space-logo-only.svg" alt="Heart Space" width={36} height={36} />
           <span className="font-bold text-lg" style={{ color: "var(--ink)" }}>
             Heart Space
           </span>
@@ -41,20 +44,21 @@ export function Navigation() {
 
         {/* Center Navigation - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-8">
-          <NavLink to="/" active={location.pathname === "/"}>
+          <NavLink href="/" active={pathname === "/"}>
             Home
           </NavLink>
-          <NavLink to="/about" active={location.pathname === "/about"}>
+          <NavLink href="/about" active={pathname === "/about"}>
             About Shashi
           </NavLink>
-          <NavLink to="/workshop" active={location.pathname === "/workshop"}>
-            Workshop 1
+          <NavLink href="/workshop" active={pathname === "/workshop"}>
+            Workshop
           </NavLink>
         </div>
 
         {/* CTA Button */}
         <Link
-          to={cta.href}
+          href={isWorkshopPage ? "#" : "/workshop#book"}
+          onClick={handleCtaClick}
           className="btn-pr text-[13px] px-[22px] py-[11px] rounded-full font-bold transition-all hover:shadow-lg group"
           style={{
             background: "var(--purple)",
@@ -62,7 +66,7 @@ export function Navigation() {
             boxShadow: "0 4px 20px rgba(124, 92, 191, 0.3)",
           }}
         >
-          {cta.text.split("→")[0]}
+          Join Workshop{" "}
           <span className="inline-block transition-transform group-hover:translate-x-1">
             →
           </span>
@@ -73,17 +77,17 @@ export function Navigation() {
 }
 
 function NavLink({
-  to,
+  href,
   active,
   children,
 }: {
-  to: string;
+  href: string;
   active: boolean;
   children: React.ReactNode;
 }) {
   return (
     <Link
-      to={to}
+      href={href}
       className={`relative text-sm transition-colors ${
         active ? "font-semibold" : "font-medium"
       }`}
@@ -97,31 +101,5 @@ function NavLink({
         />
       )}
     </Link>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M14 24.5C14 24.5 3.5 18.5 3.5 10.5C3.5 8.5 4.5 6 7 5C9.5 4 11.5 5 14 7.5C16.5 5 18.5 4 21 5C23.5 6 24.5 8.5 24.5 10.5C24.5 18.5 14 24.5 14 24.5Z"
-        stroke="#FF7F5C"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10 12C10 12 11 13.5 13 14C15 14.5 16.5 13.5 18 12"
-        stroke="#FF7F5C"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }

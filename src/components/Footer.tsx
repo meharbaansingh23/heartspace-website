@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -12,7 +12,7 @@ export function Footer() {
           {/* Brand Column */}
           <div>
             <div className="flex items-center gap-2.5 mb-4">
-              <HeartIcon />
+              <img src="/heart-space-logo-only.svg" alt="Heart Space" width={36} height={36} />
               <span className="font-bold text-lg" style={{ color: "var(--ink)" }}>
                 Heart Space
               </span>
@@ -39,9 +39,9 @@ export function Footer() {
                 Navigate
               </h4>
               <div className="flex flex-col gap-2.5">
-                <FooterLink to="/">Home</FooterLink>
-                <FooterLink to="/about">About Shashi</FooterLink>
-                <FooterLink to="/workshop">Workshop 1</FooterLink>
+                <FooterLink href="/">Home</FooterLink>
+                <FooterLink href="/about">About Shashi</FooterLink>
+                <FooterLink href="/workshop">Workshop</FooterLink>
               </div>
             </div>
 
@@ -54,7 +54,7 @@ export function Footer() {
                 Connect
               </h4>
               <div className="flex flex-col gap-2.5">
-                <FooterLink href="#">Instagram</FooterLink>
+                <FooterLink href="https://www.instagram.com/officialheartspace?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Instagram</FooterLink>
                 <FooterLink href="#">WhatsApp</FooterLink>
                 <FooterLink href="#">Contact</FooterLink>
               </div>
@@ -82,27 +82,27 @@ export function Footer() {
 }
 
 function FooterLink({
-  to,
   href,
   children,
+  target,
 }: {
-  to?: string;
-  href?: string;
+  href: string;
   children: React.ReactNode;
+  target?: string;
 }) {
   const className = "text-sm hover:opacity-70 transition-opacity";
   const style = { color: "var(--ink-soft)" };
 
-  if (to) {
+  if (href.startsWith("/")) {
     return (
-      <Link to={to} className={className} style={style}>
+      <Link href={href} className={className} style={style}>
         {children}
       </Link>
     );
   }
 
   return (
-    <a href={href} className={className} style={style}>
+    <a href={href} target={target} rel={target === "_blank" ? "noopener noreferrer" : undefined} className={className} style={style}>
       {children}
     </a>
   );
@@ -120,31 +120,5 @@ function SocialLink({ href, label }: { href: string; label: string }) {
         {label[0]}
       </span>
     </a>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M14 24.5C14 24.5 3.5 18.5 3.5 10.5C3.5 8.5 4.5 6 7 5C9.5 4 11.5 5 14 7.5C16.5 5 18.5 4 21 5C23.5 6 24.5 8.5 24.5 10.5C24.5 18.5 14 24.5 14 24.5Z"
-        stroke="#FF7F5C"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M10 12C10 12 11 13.5 13 14C15 14.5 16.5 13.5 18 12"
-        stroke="#FF7F5C"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }

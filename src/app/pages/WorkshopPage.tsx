@@ -263,10 +263,11 @@ function CountdownTimer({ targetDate: targetDateStr }: { targetDate: string }) {
   });
 
   useEffect(() => {
-    // Normalize: DB may return a Date object even though typed as string; extract YYYY-MM-DD
-    const dateOnly = String(targetDateStr).split("T")[0];
-    // Use 11:00 AM IST (UTC+5:30) = 05:30 UTC
-    const targetDate = new Date(`${dateOnly}T05:30:00Z`).getTime();
+    // Parse the date robustly — avoids any string format ambiguity.
+    // new Date(str) handles "2026-03-28", ISO strings, and Date objects.
+    const d = new Date(String(targetDateStr));
+    // Target: 11:00 AM IST = 05:30 UTC
+    const targetDate = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 5, 30, 0);
 
     const updateCountdown = () => {
       const now = new Date().getTime();

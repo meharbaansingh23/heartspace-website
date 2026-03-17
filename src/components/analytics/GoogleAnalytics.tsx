@@ -38,7 +38,7 @@ function GA() {
 
 export function GoogleAnalytics() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <GA />
     </Suspense>
   );

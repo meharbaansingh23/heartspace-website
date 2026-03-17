@@ -32,7 +32,22 @@ export async function POST(request: NextRequest) {
     }
 
     const workshop = workshops[0];
-    // Amount in paise — use discounted price if set, else regular
+
+    // Check for duplicate registration by email or phone
+    const existing = await sql`
+      SELECT id FROM registrations
+      WHERE workshop_id = ${validated.workshop_id}
+        AND payment_status IN ('pending', 'success')
+        AND (email = ${validated.email} OR phone = ${validated.phone})
+      LIMIT 1
+    `;
+    if (existing.length > 0) {
+      return NextResponse.json(
+        { error: "already_registered", message: "You're already registered for this workshop. Please check your email for details." },
+        { status: 409 }
+      );
+    }
+
     // Amount in rupees — use discounted price if set, else regular
     const amountInRupees: number =
       workshop.discounted_price ?? workshop.regular_price;

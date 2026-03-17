@@ -69,11 +69,11 @@ export function Footer() {
         >
           <p className="text-xs" style={{ color: "var(--ink-soft)" }}>© 2026 Buntikki Technologies Private Limited. All rights reserved.</p>
           <div className="flex items-center gap-4 text-xs" style={{ color: "var(--ink-soft)" }}>
-            <FooterLink href="#">Privacy Policy</FooterLink>
+            <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             <span>·</span>
-            <FooterLink href="#">Terms of Service</FooterLink>
+            <FooterLink href="/terms-of-service">Terms of Service</FooterLink>
             <span>·</span>
-            <FooterLink href="#">Refund Policy</FooterLink>
+            <FooterLink href="/refund-policy">Refund Policy</FooterLink>
           </div>
         </div>
       </div>

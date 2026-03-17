@@ -23,7 +23,7 @@ interface FormValues {
 }
 
 export function RegistrationModal({ workshop, onClose }: RegistrationModalProps) {
-  const [step, setStep] = useState<"form" | "processing" | "error">("form");
+  const [step, setStep] = useState<"form" | "processing" | "error" | "already_registered">("form");
   const [errorMessage, setErrorMessage] = useState("");
   const [sdkLoaded, setSdkLoaded] = useState(false);
 
@@ -63,7 +63,12 @@ export function RegistrationModal({ workshop, onClose }: RegistrationModalProps)
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error ?? "Registration failed");
+        if (err.error === "already_registered") {
+          setErrorMessage(err.message);
+          setStep("already_registered");
+          return;
+        }
+        throw new Error(err.detail ?? err.error ?? "Registration failed");
       }
 
       const { payment_session_id } = await res.json();
@@ -291,6 +296,25 @@ export function RegistrationModal({ workshop, onClose }: RegistrationModalProps)
                   style={{ background: "var(--purple)" }}
                 >
                   Try again
+                </button>
+              </div>
+            )}
+
+            {step === "already_registered" && (
+              <div className="py-6 text-center">
+                <div className="text-4xl mb-4">✅</div>
+                <p className="font-semibold mb-2" style={{ color: "var(--ink)" }}>
+                  You're already registered!
+                </p>
+                <p className="text-sm mb-6" style={{ color: "var(--ink-soft)" }}>
+                  {errorMessage}
+                </p>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all hover:opacity-90"
+                  style={{ background: "var(--purple)" }}
+                >
+                  Close
                 </button>
               </div>
             )}

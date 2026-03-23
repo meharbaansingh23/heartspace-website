@@ -45,13 +45,24 @@ function HeroSection() {
           <div>
             <Pill variant="peach">The person behind Heart Space</Pill>
 
-            <h1 className="mt-6 mb-6" style={{ fontSize: "clamp(42px, 6vw, 72px)" }}>
+            <h1 className="mt-6 mb-2" style={{ fontSize: "clamp(42px, 6vw, 72px)" }}>
               Shashi Velath.
             </h1>
 
-            <p className="text-lg mb-8" style={{ color: "var(--ink-soft)" }}>
-              Former investigative journalist and war correspondent. The person who built
-              Heart Space because he needed it first.
+            <p className="text-sm font-semibold mb-6" style={{ color: "var(--ink-soft)" }}>
+              Founder, Heart Space
+            </p>
+
+            <p className="text-lg mb-4" style={{ color: "var(--ink-soft)" }}>
+              Relationship coach trained in practices built on awareness, humble inquiry,
+              and inside-out personal transformation.
+            </p>
+
+            <p className="text-base mb-8" style={{ color: "var(--ink-soft)" }}>
+              He has spent 20+ years working with people in all kinds of situations — from
+              conflict zones to boardrooms, young changemakers to communities finding their
+              footing. He works with anyone ready to bring more clarity, honesty, and love
+              into how they relate.
             </p>
 
             <div className="flex gap-3 mb-8 flex-wrap">
@@ -59,13 +70,13 @@ function HeroSection() {
                 className="inline-block px-4 py-2 rounded-xl text-sm font-bold"
                 style={{ background: "#FFF0E8", color: "var(--ink)" }}
               >
-                📰 Journalist · War Correspondent
+                🌍 20+ Years Field Experience
               </div>
               <div
                 className="inline-block px-4 py-2 rounded-xl text-sm font-bold"
                 style={{ background: "#F4F1FF", color: "var(--ink)" }}
               >
-                🎙️ Coach · Facilitator
+                🎙️ Relationship Coach
               </div>
             </div>
 
@@ -96,7 +107,7 @@ function HeroSection() {
                   className="absolute bottom-0 left-0 right-0 py-3 px-5 text-center text-white text-xs font-bold tracking-wide"
                   style={{ background: "#FF7F5C" }}
                 >
-                  WAR CORRESPONDENT → COACH
+                  AWARENESS · INQUIRY · TRANSFORMATION
                 </div>
               </div>
             </div>
@@ -162,11 +173,11 @@ function Chapter01Section() {
                 Chapter 01
               </p>
               <h2 style={{ fontSize: "clamp(30px, 4vw, 50px)" }}>
-                A war correspondent learns the hard way.
+                A different kind of classroom.
               </h2>
 
               {/* Decorative 01 */}
-              
+
             </div>
           </ScrollReveal>
 
@@ -174,19 +185,22 @@ function Chapter01Section() {
           <ScrollReveal delay={160}>
             <div>
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
-                Shashi spent years covering conflict. Not from a distance — up close, in
-                places where getting the story meant earning the trust of people who had
-                every reason not to trust you.
+                For over two decades, Shashi worked with people navigating high-stakes
+                situations — conflict zones, crisis communities, organisations under
+                pressure, young leaders finding their way.
               </p>
 
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
-                He learned what real listening looks like. What it means to be fully present
-                with someone. What happens when you stop projecting what you expect and
-                actually see who's in front of you.
+                The settings were different. The dynamic was always the same.
               </p>
 
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
-                Those weren't relationship skills. They were survival skills.
+                People were struggling not because they lacked skill or intelligence, but
+                because something in how they were relating — to others, to themselves —
+                kept getting in the way. Real listening. Full presence. Seeing who's actually
+                in front of you instead of the story you've built about them. These weren't
+                soft skills in the places Shashi worked. They were the difference between
+                things moving and things breaking down.
               </p>
 
               <div
@@ -208,18 +222,11 @@ function Chapter01Section() {
 
         {/* Chapter 01 Image */}
         <ScrollReveal delay={240}>
-          <div className="mt-16 grid grid-cols-2 max-[900px]:grid-cols-1 gap-6">
-            <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3" }}>
+          <div className="mt-16 ">
+            <div className="relative rounded-2xl overflow-hidden">
               <ImageWithFallback
-                src="/aboutUS_War_1.webp"
+                src="/about-us-shashi-talk.png"
                 alt="Journalism and reporting"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3" }}>
-              <ImageWithFallback
-                src="/aboutUS_War_1.webp"
-                alt="Notebook and reflection"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -259,7 +266,7 @@ function Chapter02Section() {
           <ScrollReveal>
             <div>
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
-                After conflict journalism, Shashi moved into working with organisations and
+                After years in the field, Shashi moved into working with organisations and
                 leaders. Same pattern, different context.
               </p>
 
@@ -271,6 +278,12 @@ function Chapter02Section() {
 
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
                 The mechanism was identical. The cost was just measured in different units.
+              </p>
+
+              <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
+                Heart Space is built on a simple observation: nothing moves in an
+                organisation — or a family, or a friendship — until the conversations that
+                need to happen actually happen.
               </p>
 
               <div
@@ -355,10 +368,9 @@ function Chapter03Section() {
           <ScrollReveal delay={160}>
             <div>
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
-                None of what Shashi learned in war zones or boardrooms made his own
-                relationships easy. He still avoided conversations. Still repeated patterns.
-                Still found himself responding to an image of the person rather than the
-                person.
+                None of what Shashi learned over two decades made his own relationships
+                easy. He still avoided conversations. Still repeated patterns. Still found
+                himself responding to an image of the person rather than the person.
               </p>
 
               <p className="text-base mb-6" style={{ color: "var(--ink-soft)" }}>
@@ -367,7 +379,8 @@ function Chapter03Section() {
 
               <p className="text-base" style={{ color: "var(--ink-soft)" }}>
                 A space where the seeing could actually happen. Where the conversation that
-                kept not-happening could finally begin.
+                kept not-happening could finally begin. Where clarity, honesty, and love
+                could show up together — not as ideals, but as practice.
               </p>
             </div>
           </ScrollReveal>
@@ -470,7 +483,7 @@ function PrinciplesSection() {
               emoji: "🔥",
               bg: "#FFF0B8",
               title: "Built on failure, not theory",
-              text: "Heart Space wasn't designed in a workshop or borrowed from a book. It emerged from Shashi's own failures — in war zones, in boardrooms, in his own life.",
+              text: "Heart Space wasn't designed in a workshop or borrowed from a book. It emerged from Shashi's own failures — in the field, in boardrooms, in his own life.",
             },
             {
               emoji: "💫",
